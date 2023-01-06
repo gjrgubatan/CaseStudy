@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Create New Compensation</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/employees}">Home</a>
+	    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	      		<span class="navbar-toggler-icon"></span>
+	    	</button>
+	    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ml-auto">
+	      	<li class="nav-item ml-auto">
+	        	<a class="nav-link" th:href="@{/logout}" method="post">Log Out</a>
+	        </li>
+	      </ul>
+    	</div>
+	</div>
+	</nav>
+	</br>
+	</br>
+	<div class="container">
+	<div >
+		<h1 style="text-align:center">Add Compensation</h1>
+	</div>
+	<div class = "container">
+		<div class ="row">
+			<div class = "col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+				<div class = "card-body">
+					<form th:action="@{/saveCompensation}" th:object="${compensation}" method="post">
+						<div class = "form-group">
+							<label for="type" class="label">Type: </label>
+							<select class="form-control" id="type" th:field="*{type}">
+								<option value="Adjustment">Adjustment</option>
+								<option value="Allowance">Allowance</option>
+								<option value="Bonus">Bonus</option>
+								<option value="Commission">Commission</option>
+								<option value="Salary">Salary</option>
+							</select>
+						</div>
+						<div class = "form-group">
+							<label for="id_employee" class="label">Employee ID</label>
+								<input type="text" class="form-control" id="id_employee" th:field="*{id_employee}" readonly>
+						</div>
+						<div class = "form-group">
+							<label for="amount" class="label">Amount</label>
+								<input type="number" class="form-control" id="amount" th:field="*{amount}" required>
+						</div>
+						<div class = "form-group">
+							<label for="description" class="label">Description</label><br>
+							<textarea class="form-control" id="description" rows="3" th:field="*{description}"></textarea>
+							<small id="info-desc">The description is optional for salary</small>
+						</div>
+						<div class = "form-group">
+							<label for="datec" class="label">Date</label>
+							<input type="date" class="form-controller" id="datec" th:field="*{datec}" required>
+						</div>
+						<div class = "box-footer">
+							<button type = "submit" class = "btn btn-primary">Submit</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

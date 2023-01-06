@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Employee Management System</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/986160be55.js" crossorigin="anonymous"></script>
+ <style type="text/css">
+ .form-search{
+ margin-bottom:20px;
+ }
+ </style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-dark bg-dark">
+		 <a class="navbar-brand" href="#">Employee Management</a>
+		 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+		 	<span class="navbar-toggler-icon"></span>
+		 </button>
+		 <div class="collapse navbar-collapse" id="collapsibleNavbar">
+			 <ul class="navbar-nav">
+				 <li class="nav-item">
+				 	<a class="nav-link" th:href="@{/employees}">Home</a>
+				 </li>
+			 </ul>
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	        	<li class="nav-item">
+	        		<a class="nav-link active" aria-current="page" th:href = "@{/employees/new}">Add Employee</a>
+	        	</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li>
+				 	<a class="nav-link" th:href="@{/logout}">Logout</a>
+				</li>
+			</ul>	
+		</div>
+	</nav>
+	<div class = "container">
+		<div class = "row">
+			<h1>List of Employees</h1>
+		</div>
+		<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+			<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+				<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+			</symbol>
+		</svg>
+				<div class = "alert alert-success d-flex align-items-center" role ="alert" th:if="${added}">
+					<svg class = "bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+					<div th:text="${added}"></div>
+				</div>
+				<div class = "alert alert-success d-flex align-items-center" role ="alert" th:if="${updated}">
+					<svg class = "bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+					<div th:text="${updated}"></div>
+				</div>
+				<svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+					<symbol id="x-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+			  			<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+					</symbol>
+				</svg>
+				<div class = "alert alert-danger d-flex align-items-center" role ="alert" th:if="${warning}">
+					<svg class = "bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#x-circle-fill"/></svg>
+					<div th:text="${warning}"></div>
+				</div>
+				<div class = "alert alert-danger d-flex align-items-center" role ="alert" th:if="${error}">
+					<svg class = "bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#x-circle-fill"/></svg>
+					<div th:text="${error}"></div>
+				</div>
+				<div class = "alert alert-danger d-flex align-items-center" role ="alert" th:if="${error1}">
+					<svg class = "bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#x-circle-fill"/></svg>
+					<div th:text="${error1}"></div>
+				</div>
+				<div class = "alert alert-danger d-flex align-items-center" role ="alert" th:if="${warning1}">
+					<svg class = "bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#x-circle-fill"/></svg>
+					<div th:text="${warning1}"></div>
+				</div>
+				<div class = "alert alert-danger d-flex align-items-center" role ="alert" th:if="${duplicateSalary}">
+					<svg class = "bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#x-circle-fill"/></svg>
+					<div th:text="${duplicateSalary}"></div>
+				</div>
+				<div class = "alert alert-success d-flex align-items-center" role ="alert" th:if="${success}">
+					<svg class = "bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+					<div th:text="${success}"></div>
+				</div>
+				<div class = "form-search">
+					<form th:action="@{/employees/search}" th:object="${filter}" method="POST">
+						 <div class="row">
+							 <div class="col-md-1 d-flex align-items-center adjust">
+							 	<label><h5 style="font-size: 18px">Filter by:</h6></h5></label>
+							 </div>
+							 <div class="col-md-3 adjust">
+							 	<div class="form-floating">
+									 <input type="text" name="firstName" id="floatingFN" th:value="${firstName}" class="form-control" placeholder="First name">
+									 <label for="floatingFN">First name</label>
+							 	</div>
+							 </div>
+							 <div class="col-md-3 adjust">
+							 	<div class="form-floating">
+							 		<input type="text" name="lastName" id="floatingLN" th:value="${lastName}" class="form-control" placeholder="Last name">
+							 		<label for="floatingLN">Last name</label>
+							 	</div>
+							 </div>
+							 <div class="col-md-3 adjust">
+							 	<div class="form-floating">
+							 		<input type="text" name="position" id="empPosition" th:value="${position}" class="form-control" placeholder="Position">
+							 		<label for="empPposition">Position</label>
+							 	</div>
+							 </div>
+							 <div class="col-md-2 d-grid gap-2 d-md-flex justify-content-md-end adjust">
+							 	<div class="d-flex align-items-center">
+							 		<button class="btn btn-primary me-md-2" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+							 		<button class="btn btn-secondary clear" type="button" onClick="window.location='/employees'"><i class="fa-solid fa-rotate-left"></i> Clear</button>
+							 	</div>
+							 </div>
+						 </div>
+					 </form>
+				</div>
+		<table class = "table table-striped table-bordered">
+			<thead class = "table-dark">
+				<tr>
+					<th>Employee ID</th>
+					<th>First Name</th>
+					<th>Middle Name</th>
+					<th>Last Name</th>
+					<th>Birth Date</th>
+					<th>Position</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each = "employee: ${employees}">
+					<td th:text = "${employee.id}"></td>
+					<td th:text = "${employee.firstName}"></td>
+					<td th:text = "${employee.middleName}"></td>
+					<td th:text = "${employee.lastName}"></td>
+					<td th:text = "${employee.birthDate}"></td>
+					<td th:text = "${employee.position}"></td>
+					<td>
+						<a th:href = "@{/employees/edit/{id}(id=${employee.id})}"
+						class = "btn btn-sm btn-primary" title = "Edit Employee">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+							<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+							<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+							</svg>
+						</a>
+						<a th:href="@{/compensation/{id}(id=${employee.id})}"
+						class = "btn btn-sm btn-success" title = "View Compensations">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
+								<path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z"/>
+								<path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z"/>
+								<path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+							</svg>
+						</a>
+						<a th:href="@{/addCompensation/{id}(id=${employee.id})}" 
+						class = "btn btn-sm btn-warning" title = "Add Compensations">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+							  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+							  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+							</svg>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
